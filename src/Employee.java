@@ -4,9 +4,9 @@ public class Employee
 {
 	public enum Department
 	{
-		Sales,
-		Marketing,
-		Operations
+		SALES,
+		MARKETING,
+		OPERATIONS
 	};
 
 	public int id;
@@ -30,10 +30,5 @@ public class Employee
 		this.name = name;
 		this.department = department;
 		this.email = email;
-	}
-
-	public static Department
-	parseDepartment(String str) throws Exception
-	{
 	}
 }

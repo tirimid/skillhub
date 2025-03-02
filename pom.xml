@@ -3,7 +3,11 @@
     <groupId>net.tirimid.skillhub</groupId>
     <artifactId>skillhub</artifactId>
     <version>1</version>
+    <properties>
+        <src.dir>src</src.dir>
+    </properties>
     <build>
+        <sourceDirectory>${src.dir}</sourceDirectory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

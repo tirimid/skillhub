@@ -9,6 +9,8 @@ public class Main
 	main(String[] Args)
 	{
 		State.read();
+		if (State.validate() != 0)
+			return;
 		State.dump();
 	}
 

@@ -2,13 +2,20 @@ package net.tirimid.skillhub;
 
 public class Facilitator
 {
+	public enum Expertise
+	{
+		LEADERSHIP,
+		DATA_ANALYTICS,
+		COMMUNICATION_SKILLS
+	};
+
 	public int id;
 	public String name;
-	public String expertise;
+	public Expertise expertise;
 	public String email;
 	
 	public
-	Facilitator(int id, String name, String expertise, String email)
+	Facilitator(int id, String name, Expertise expertise, String email)
 	{
 		this.id = id;
 		this.name = name;
@@ -17,7 +24,7 @@ public class Facilitator
 	}
 
 	public
-	Facilitator(String name, String expertise, String email)
+	Facilitator(String name, Expertise expertise, String email)
 	{
 		this.id = State.genFacilitatorId();
 		this.name = name;
