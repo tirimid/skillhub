@@ -16,3 +16,10 @@ CONFERENCE_HALL
 FULL_DAY
 1
 1
+
+2
+Cannon ball imitation
+3
+BOARDROOM
+MORNING
+0

@@ -31,4 +31,15 @@ public class Facilitator
 		this.expertise = expertise;
 		this.email = email;
 	}
+
+	public Workshop
+	getAssignedWorkshop()
+	{
+		for (Workshop w : State.workshops)
+		{
+			if (id == w.facilitatorId)
+				return w;
+		}
+		return null;
+	}
 }

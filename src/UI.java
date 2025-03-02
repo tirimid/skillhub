@@ -26,6 +26,10 @@ public class UI
 	private static JTextField deFacilitatorName = new JTextField(TEXT_FIELD_WIDTH);
 	private static JComboBox deFacilitatorExpertise = new JComboBox();
 	private static JTextField deFacilitatorEmail = new JTextField(TEXT_FIELD_WIDTH);
+	private static JTextField deWorkshopTitle = new JTextField(TEXT_FIELD_WIDTH);
+	private static JComboBox deWorkshopFacilitatorId = new JComboBox();
+	private static JComboBox deWorkshopLocation = new JComboBox();
+	private static JComboBox deWorkshopTiming = new JComboBox();
 
 	private static void
 	genEmployeeList()
@@ -129,6 +133,24 @@ public class UI
 			JTable tab = new JTable(workshopData, colNames);
 			workshopList.add(tab.getTableHeader());
 			workshopList.add(tab);
+
+			ArrayList<String[]> employeeData = new ArrayList<String[]>();
+			for (int employeeId : w.employees)
+			{
+				Employee employee = State.getEmployee(employeeId);
+				String[] data =
+				{
+					Integer.toString(employeeId),
+					employee.name
+				};
+				employeeData.add(data);
+			}
+
+			String[] employeeColNames = {"ID", "Name"};
+
+			JTable employeeTab = new JTable(employeeData.toArray(new String[0][0]), employeeColNames);
+			workshopList.add(employeeTab.getTableHeader());
+			workshopList.add(employeeTab);
 		}
 	}
 
@@ -143,6 +165,10 @@ public class UI
 		deFacilitatorName.setText("");
 		deFacilitatorExpertise.removeAllItems();
 		deFacilitatorEmail.setText("");
+		deWorkshopTitle.setText("");
+		deWorkshopFacilitatorId.removeAllItems();
+		deWorkshopLocation.removeAllItems();
+		deWorkshopTiming.removeAllItems();
 
 		dataEntry.setLayout(new GridLayout(0, 1));
 		dataEntry.setBorder(BorderFactory.createLineBorder(BORDER_COLOR));
@@ -155,6 +181,18 @@ public class UI
 		for (Facilitator.Expertise e : Facilitator.Expertise.values())
 			deFacilitatorExpertise.addItem(e.name());
 
+		for (Facilitator f : State.facilitators)
+		{
+			if (f.getAssignedWorkshop() == null)
+				deWorkshopFacilitatorId.addItem(Integer.toString(f.id));
+		}
+
+		for (Workshop.Location l : Workshop.Location.values())
+			deWorkshopLocation.addItem(l.name());
+
+		for (Workshop.Timing t : Workshop.Timing.values())
+			deWorkshopTiming.addItem(t.name());
+
 		// populate panel with data entry functionality.
 		dataEntry.add(new JLabel("Create new employee"));
 		dataEntry.add(deEmployeeName);
@@ -166,7 +204,7 @@ public class UI
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				tryAddEmployee(e);
+				tryAddEmployee();
 			}
 		});
 		dataEntry.add(addEmployee);
@@ -181,14 +219,30 @@ public class UI
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				tryAddFacilitator(e);
+				tryAddFacilitator();
 			}
 		});
 		dataEntry.add(addFacilitator);
+
+		dataEntry.add(new JLabel("Create new workshop"));
+		dataEntry.add(deWorkshopTitle);
+		dataEntry.add(deWorkshopFacilitatorId);
+		dataEntry.add(deWorkshopLocation);
+		dataEntry.add(deWorkshopTiming);
+		JButton addWorkshop = new JButton("Add workshop");
+		addWorkshop.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				tryAddWorkshop();
+			}
+		});
+		dataEntry.add(addWorkshop);
 	}
 
 	private static void
-	tryAddEmployee(ActionEvent e)
+	tryAddEmployee()
 	{
 		String name = deEmployeeName.getText().trim();
 		if (name.isEmpty())
@@ -215,7 +269,7 @@ public class UI
 	}
 
 	private static void
-	tryAddFacilitator(ActionEvent e)
+	tryAddFacilitator()
 	{
 		String name = deFacilitatorName.getText().trim();
 		if (name.isEmpty())
@@ -240,6 +294,28 @@ public class UI
 		genDataEntry();
 		frame.pack();
 	}
+	
+	private static void
+	tryAddWorkshop()
+	{
+		String title = deWorkshopTitle.getText().trim();
+		if (title.isEmpty())
+		{
+			Util.showError("a title must be specified for the workshop!");
+			return;
+		}
+
+		int facilitatorId = Integer.parseInt((String)deWorkshopFacilitatorId.getSelectedItem());
+		Workshop.Location location = Workshop.Location.valueOf((String)deWorkshopLocation.getSelectedItem());
+		Workshop.Timing timing = Workshop.Timing.valueOf((String)deWorkshopTiming.getSelectedItem());
+
+		Workshop newWorkshop = new Workshop(title, facilitatorId, location, timing);
+		State.workshops.add(newWorkshop);
+		State.write();
+		genWorkshopList();
+		genDataEntry();
+		frame.pack();
+	}
 
 	private static void
 	genDataRemoval()
@@ -254,18 +330,32 @@ public class UI
 		// TODO: implement data removal panel gen.
 	}
 
+	private static void
+	addScrollablePanel(JPanel panel)
+	{
+		JScrollPane scrollPane = new JScrollPane(
+			panel,
+			ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+			ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER
+		);
+		scrollPane.setPreferredSize(new Dimension(600, 300));
+		frame.getContentPane().add(scrollPane);
+	}
+
 	public static void
 	run()
 	{
 		// make main frame.
-		frame.setLayout(new GridLayout(3, 2));
+		frame.setLayout(new GridLayout(2, 3));
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		frame.setPreferredSize(new Dimension(1800, 900));
+		frame.setResizable(false);
 
-		frame.add(employeeList);
-		frame.add(facilitatorList);
-		frame.add(workshopList);
-		frame.add(dataEntry);
-		frame.add(dataRemoval);
+		addScrollablePanel(employeeList);
+		addScrollablePanel(facilitatorList);
+		addScrollablePanel(workshopList);
+		addScrollablePanel(dataEntry);
+		addScrollablePanel(dataRemoval);
 
 		// generate initial state for everything.
 		genEmployeeList();
