@@ -8,7 +8,8 @@ public class State
 	private static final String EMPLOYEES_FILE = "employees.txt";
 	private static final String FACILITATORS_FILE = "facilitators.txt";
 	private static final String WORKSHOPS_FILE = "workshops.txt";
-	private static final int MAX_WORKSHOP_MEMBERS = 5;
+
+	public static final int MAX_WORKSHOP_MEMBERS = 5;
 
 	public static ArrayList<Employee> employees = new ArrayList<Employee>();
 	public static ArrayList<Facilitator> facilitators = new ArrayList<Facilitator>();
@@ -76,7 +77,9 @@ public class State
 				for (int i = 0; i < employeeCnt; ++i)
 				{
 					int employee = Integer.parseInt(br.readLine());
+					Workshop.Attendance attendance = Workshop.Attendance.valueOf(br.readLine());
 					workshop.employees.add(employee);
+					workshop.attendance.add(attendance);
 				}
 
 				workshops.add(workshop);
@@ -145,8 +148,11 @@ public class State
 				bw.write(w.timing.name() + "\n");
 
 				bw.write(Integer.toString(w.employees.size()) + "\n");
-				for (int employee : w.employees)
-					bw.write(Integer.toString(employee) + "\n");
+				for (int i = 0; i < w.employees.size(); ++i)
+				{
+					bw.write(Integer.toString(w.employees.get(i)) + "\n");
+					bw.write(w.attendance.get(i).name() + "\n");
+				}
 			}
 		}
 		catch (Exception e)

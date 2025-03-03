@@ -14,17 +14,17 @@ Jonathan Glow
 MARKETING
 jglow@tirimid.net
 
-3
-Case D'Match
-OPERATIONS
-cdmatch@tirimid.net
-
 4
 Simon Tupid
 MARKETING
 stupid@tirimid.net
 
 5
-Jim James
+Jim Jims
+OPERATIONS
+jjims@tirimid.net
+
+6
+Idris Diot
 SALES
-jjames@tirimid.net
+idiot@tirimid.net

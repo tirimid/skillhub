@@ -18,6 +18,12 @@ public class Workshop
 		FULL_DAY
 	};
 
+	public enum Attendance
+	{
+		ATTENDED,
+		DID_NOT_ATTEND
+	};
+
 	public int id;
 	public String title;
 	public int facilitatorId;
@@ -31,6 +37,7 @@ public class Workshop
 	// programmer and implemented it differently.
 	// the end-user experience is really the same.
 	public ArrayList<Integer> employees;
+	public ArrayList<Attendance> attendance;
 
 	public
 	Workshop(int id, String title, int facilitatorId, Location location, Timing timing)
@@ -41,6 +48,7 @@ public class Workshop
 		this.location = location;
 		this.timing = timing;
 		this.employees = new ArrayList<Integer>();
+		this.attendance = new ArrayList<Attendance>();
 	}
 
 	public
@@ -52,5 +60,6 @@ public class Workshop
 		this.location = location;
 		this.timing = timing;
 		this.employees = new ArrayList<Integer>();
+		this.attendance = new ArrayList<Attendance>();
 	}
 }
