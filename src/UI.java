@@ -423,6 +423,7 @@ public class UI
 		}
 
 		workshop.employees.add(employeeId);
+		workshop.attendance.add(Workshop.Attendance.DID_NOT_ATTEND);
 		State.write();
 		genWorkshopList();
 		genDataEntry();
